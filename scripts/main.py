@@ -10,9 +10,12 @@ import os
 import string
 import csv
 import time
+import inspect
 
 # The directory to store the models
-cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models')
+script_path = inspect.getframeinfo(inspect.currentframe()).filename
+#cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models')
+cache_dir = os.path.join(os.path.dirname(os.path.abspath(script_path)), 'models')
 # 中文转英文的翻译模型
 class ZhEnTranslator:
     def __init__(self, cache_dir=cache_dir, model_name="Helsinki-NLP/opus-mt-zh-en"):
@@ -475,7 +478,7 @@ class Script(scripts.Script):
     # 翻译函数
     def transfer(self,text):
         # 加载 csv 文件并缓存到内存中
-        csv_path = os.path.join(os.path.dirname(__file__), 'translations.csv')
+        csv_path = os.path.join(os.path.dirname(os.path.abspath(script_path)), 'translations.csv')
         cache = load_csv(csv_path)
         # 自定义翻译
         result = custom_translate(text, cache)
